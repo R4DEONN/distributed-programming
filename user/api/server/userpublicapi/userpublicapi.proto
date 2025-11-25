@@ -1,0 +1,37 @@
+syntax = "proto3";
+package User;
+
+option go_package = "/.;userpublicapi";
+
+service UserPublicAPI {
+  rpc StoreUser(StoreUserRequest) returns (StoreUserResponse);
+  rpc FindUser(FindUserRequest) returns (FindUserResponse);
+}
+
+message StoreUserRequest {
+  string userID = 1;
+  string login = 2;
+  optional string email = 3;
+  optional string telegram = 4;
+}
+
+message StoreUserResponse {
+  string userID = 1;
+}
+
+message FindUserRequest {
+  string userID = 1;
+}
+
+message FindUserResponse {
+  string userID = 1;
+  string login = 2;
+  UserStatus status = 3;
+  optional string email = 4;
+  optional string telegram = 5;
+}
+
+enum UserStatus {
+  Blocked = 0;
+  Active = 1;
+}

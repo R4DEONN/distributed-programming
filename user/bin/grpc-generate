@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# This script takes $NAME.proto and generates:
+#  - $NAME.pb.go - GRPC API server interface and client implementation
+
+set -o errexit
+
+# Prints and calls given command
+echo_call() {
+    echo "$@"
+    "$@"
+}
+
+generate_proto() {
+    local PROTO_PATH=$1
+    if [ ! -f "$PROTO_PATH" ]; then
+        echo "proto file '$PROTO_PATH' not exist" 1>&2
+        exit 1
+    fi
+
+    local PROTO_DIR
+    local PROTO_NAME
+    PROTO_DIR=$(dirname "$PROTO_PATH")
+    PROTO_NAME=$(basename "$PROTO_PATH")
+
+    echo_call protoc \
+        "-I." \
+        "-I/opt/include" \
+        "-I${PROTO_DIR}" \
+        "--go_out=${PROTO_DIR}/." \
+        "--go-grpc_out=${PROTO_DIR}/." \
+        "${PROTO_DIR}/${PROTO_NAME}"
+}
+
+for PROTO_PATH in "$@"
+do
+    generate_proto "$PROTO_PATH"
+done
