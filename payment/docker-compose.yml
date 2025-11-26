@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  payment:
+    image: payment
+    container_name: payment
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081" # GRPC API port
+    environment:
+      PAYMENT_DB_HOST: payment-db
+      PAYMENT_DB_PORT: 3306
+      PAYMENT_DB_NAME: payment
+      PAYMENT_DB_USER: payment
+      PAYMENT_DB_PASSWORD: ${DB_PASSWORD}
+      PAYMENT_DB_MAX_CONN: 5
+    depends_on:
+      - payment-db
+    restart: unless-stopped
+
+  payment-db:
+    image: percona:8.0
+    container_name: payment-db
+    environment:
+      MYSQL_DATABASE: payment
+      MYSQL_USER: payment
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - payment-db-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  payment-db-data:

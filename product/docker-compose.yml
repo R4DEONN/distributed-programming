@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  product:
+    image: product
+    container_name: product
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081" # GRPC API port
+    environment:
+      PRODUCT_DB_HOST: product-db
+      PRODUCT_DB_PORT: 3306
+      PRODUCT_DB_NAME: product
+      PRODUCT_DB_USER: product
+      PRODUCT_DB_PASSWORD: ${DB_PASSWORD}
+      PRODUCT_DB_MAX_CONN: 5
+    depends_on:
+      - product-db
+    restart: unless-stopped
+
+  product-db:
+    image: percona:8.0
+    container_name: product-db
+    environment:
+      MYSQL_DATABASE: product
+      MYSQL_USER: product
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - product-db-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  product-db-data:

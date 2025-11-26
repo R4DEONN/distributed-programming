@@ -1,0 +1,7 @@
+.idea/
+/vendor/
+
+bin/payment
+!bin/
+
+.env

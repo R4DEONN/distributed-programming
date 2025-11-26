@@ -1,0 +1,13 @@
+syntax = "proto3";
+package Product;
+
+option go_package = "/.;productinternal";
+
+service ProductInternalService {
+  rpc Ping(PingRequest) returns (PingResponse);
+}
+
+message PingRequest {}
+message PingResponse {
+  string message = 1;
+}

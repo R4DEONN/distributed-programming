@@ -1,0 +1,13 @@
+syntax = "proto3";
+package Notification;
+
+option go_package = "/.;notificationinternal";
+
+service NotificationInternalService {
+  rpc Ping(PingRequest) returns (PingResponse);
+}
+
+message PingRequest {}
+message PingResponse {
+  string message = 1;
+}

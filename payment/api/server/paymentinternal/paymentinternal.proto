@@ -1,0 +1,13 @@
+syntax = "proto3";
+package Payment;
+
+option go_package = "/.;paymentinternal";
+
+service PaymentInternalService {
+  rpc Ping(PingRequest) returns (PingResponse);
+}
+
+message PingRequest {}
+message PingResponse {
+  string message = 1;
+}
