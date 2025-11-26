@@ -8,8 +8,13 @@ import (
 	"github.com/google/uuid"
 )
 
-type Event interface{ Type() string }
-type EventDispatcher interface{ Dispatch(event Event) error }
+type Event interface {
+	Type() string
+}
+
+type EventDispatcher interface {
+	Dispatch(event Event) error
+}
 
 type Notification interface {
 	HandleUserCreated(event model.UserCreatedEvent) error

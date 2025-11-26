@@ -45,7 +45,7 @@ func (s *productService) CreateProduct(name string, price float64) (*model.Produ
 		if err == nil {
 			return nil, model.ErrProductNameExists
 		}
-		return nil, fmt.Errorf("failed to check product name uniqueness: %w", err)
+		return nil, fmt.Errorf("failed to check product name existence: %w", err)
 	}
 
 	id, err := s.repo.NextID()
