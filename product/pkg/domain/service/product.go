@@ -10,8 +10,13 @@ import (
 	"github.com/google/uuid"
 )
 
-type Event interface{ Type() string }
-type EventDispatcher interface{ Dispatch(event Event) error }
+type Event interface {
+	Type() string
+}
+
+type EventDispatcher interface {
+	Dispatch(event Event) error
+}
 
 type Product interface {
 	CreateProduct(name string, price float64) (*model.Product, error)
